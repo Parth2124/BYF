@@ -82,9 +82,23 @@ header{
   z-index:100;
   transition:all 0.3s;
   box-shadow:0 2px 20px rgba(0,0,0,0.1);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 header.scrolled{
   padding:15px 50px;
+}
+.header-left{
+  flex:1;
+}
+.header-center{
+  flex:1;
+  text-align:center;
+}
+.header-right{
+  flex:1;
+  text-align:right;
 }
 .brand{
   color:var(--beige);
@@ -93,10 +107,30 @@ header.scrolled{
   letter-spacing:2px;
   font-weight:600;
 }
+.directions-btn{
+  color:var(--beige);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:0.5px;
+  position:relative;
+  transition:all 0.3s;
+  padding:8px 16px;
+  border:1px solid rgba(243,239,233,0.3);
+  border-radius:6px;
+}
+.directions-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+header nav{
+  display:flex;
+  gap:20px;
+  justify-content:flex-end;
+}
 header nav a{
   color:var(--beige);
   text-decoration:none;
-  margin-left:35px;
   font-size:14px;
   font-weight:500;
   letter-spacing:0.5px;
@@ -148,6 +182,21 @@ header nav a:hover::after{
 @media(max-width:768px){
   .menu-toggle{display:flex;}
   header nav{display:none;}
+  .header-left{
+    display:none;
+  }
+  .header-center{
+    flex:none;
+    text-align:left;
+    order:-1;
+  }
+  .header-right{
+    flex:1;
+    text-align:right;
+  }
+  .directions-btn{
+    display:none;
+  }
   .mobile-nav-overlay{
     display:block;
     position:fixed;
@@ -227,13 +276,19 @@ header nav a:hover::after{
   overflow:hidden;
   background:var(--black);
 }
-.hero::before{
-  content:'';
+.hero-big-text{
   position:absolute;
-  inset:0;
-  background:var(--black);
-  z-index:0;
-  transition:opacity 2s ease-in-out;
+  top:50%;
+  left:25%;
+  transform:translate(-50%, -50%);
+  font-family:'Playfair Display',serif;
+  font-size:clamp(120px, 20vw, 280px);
+  font-weight:700;
+  color:rgba(243,239,233,0.08);
+  letter-spacing:20px;
+  z-index:1;
+  pointer-events:none;
+  white-space:nowrap;
 }
 .hero-left{
   flex:1;
@@ -243,7 +298,7 @@ header nav a:hover::after{
   flex-direction:column;
   justify-content:center;
   position:relative;
-  z-index:2;
+  z-index:3;
 }
 .hero-right{
   flex:1;
@@ -254,6 +309,7 @@ header nav a:hover::after{
   align-items:center;
   justify-content:center;
   padding:40px;
+  z-index:2;
 }
 .hero-image-carousel{
   width:100%;
@@ -277,27 +333,10 @@ header nav a:hover::after{
   width:100%;
   height:100%;
   object-fit:cover;
-  filter:brightness(0.4) blur(1px);
+  filter:none;
 }
 .hero-image-overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(12,12,12,0.7) 100%);
-  z-index:2;
-  pointer-events:none;
-}
-.hero-background{
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  transition:opacity 2s ease-in-out;
-  opacity:0;
-  z-index:0;
-}
-.hero-background.active{
-  opacity:1;
+  display:none;
 }
 @keyframes zoomIn{
   from{transform:scale(1);}
@@ -973,13 +1012,20 @@ footer::before {
   </div>
 </div>
 
-<header class="d-flex justify-content-between align-items-center">
-  <div class="brand">BYF</div>
-  <nav>
-    <a href="#work">Work</a>
-    <a href="#courses">Courses</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header>
+  <div class="header-left">
+    <a href="#footer-map" class="directions-btn">Directions</a>
+  </div>
+  <div class="header-center">
+    <div class="brand">BYF</div>
+  </div>
+  <div class="header-right">
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#courses">Courses</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
   <div class="menu-toggle" onclick="toggleMobileMenu()">
     <span></span>
     <span></span>
@@ -990,6 +1036,7 @@ footer::before {
 <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="toggleMobileMenu()"></div>
 <div class="mobile-nav" id="mobileNav">
   <button class="mobile-nav-close" onclick="toggleMobileMenu()" aria-label="Close menu">×</button>
+  <a href="#footer-map" onclick="toggleMobileMenu()">Directions</a>
   <a href="#work" onclick="toggleMobileMenu()">Work</a>
   <a href="#courses" onclick="toggleMobileMenu()">Courses</a>
   <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
@@ -997,7 +1044,7 @@ footer::before {
 
 <!-- Hero -->
 <div class="hero" id="heroSection">
-  <div class="hero-background" id="heroBackground"></div>
+  <div class="hero-big-text">BYF</div>
   <div class="hero-left">
     <h1>BlushYourFace<br><span style="opacity:0.8;">Palak Khanduja</span></h1>
     <p>Luxury makeup artistry crafted for elegance, confidence, and timeless beauty. Transform your look with personalized artistry that celebrates your unique essence.</p>
@@ -1020,7 +1067,6 @@ footer::before {
       <div class="hero-image-slide">
         <img src="https://images.unsplash.com/photo-1551723454-7565a1f5b161?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Elegant Makeup">
       </div>
-      <div class="hero-image-overlay"></div>
     </div>
   </div>
   <div id="snowfall"></div>
@@ -1100,16 +1146,6 @@ footer::before {
   </div>
 </section>
 
-<!-- Testimonials -->
-<section>
-  <div style="text-align:center;">
-    <h2 class="section-title reveal">Client Words</h2>
-  </div>
-  <div class="testimonial-container reveal">
-    <p class="testimonial">Palak's work speaks luxury and confidence. Her attention to detail and ability to bring out natural beauty is absolutely flawless. A true artist in every sense.</p>
-  </div>
-</section>
-
 <!-- Contact -->
 <section id="contact">
   <div style="text-align:center; margin-bottom:50px;">
@@ -1118,7 +1154,7 @@ footer::before {
   </div>
   <div class="contact-content reveal">
     <div class="contact-form-wrapper" style="max-width:700px; margin:0 auto;">
-      <form class="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+      <form class="contact-form" onsubmit="sendWhatsAppMessage(event)">
         <h3>Contact Us</h3>
         <div class="form-group">
           <label for="name">Name</label>
@@ -1130,26 +1166,36 @@ footer::before {
         </div>
         <div class="form-group">
           <label for="phone">Phone</label>
-          <input type="tel" id="phone" name="phone">
+          <input type="tel" id="phone" name="phone" required>
         </div>
         <div class="form-group">
           <label for="service">Service Interested In</label>
-          <select id="service" name="service">
+          <select id="service" name="service" required>
             <option value="">Select...</option>
-            <option>Bridal Makeup</option>
-            <option>Party/Event Makeup</option>
-            <option>Basic to Bridal Course</option>
-            <option>Advanced Pro Course</option>
-            <option>Other</option>
+            <option value="Bridal Makeup">Bridal Makeup</option>
+            <option value="Party/Event Makeup">Party/Event Makeup</option>
+            <option value="Basic to Bridal Course">Basic to Bridal Course</option>
+            <option value="Advanced Pro Course">Advanced Pro Course</option>
+            <option value="Other">Other</option>
           </select>
         </div>
         <div class="form-group">
           <label for="message">Message</label>
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
-        <button type="submit">WhatsApp</button>
+        <button type="submit">Send via WhatsApp</button>
       </form>
     </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section>
+  <div style="text-align:center;">
+    <h2 class="section-title reveal">Client Words</h2>
+  </div>
+  <div class="testimonial-container reveal">
+    <p class="testimonial">Palak's work speaks luxury and confidence. Her attention to detail and ability to bring out natural beauty is absolutely flawless. A true artist in every sense.</p>
   </div>
 </section>
 
@@ -1234,7 +1280,7 @@ footer::before {
     </div>
 
     <!-- Map Section (spans full width on medium screens and below) -->
-    <div class="footer-section map-section">
+    <div class="footer-section map-section" id="footer-map">
       <div class="footer-map">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.1234567890123!2d77.1234567890123!3d28.1234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDA3JzI0LjQiTiA3N8KwMDcnMjQuNCJF!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
@@ -1308,8 +1354,6 @@ const heroImages = [
 
 let currentImageIndex = 0;
 const slides = document.querySelectorAll('.hero-image-slide');
-const heroBackground = document.getElementById('heroBackground');
-const heroSection = document.getElementById('heroSection');
 
 function changeHeroImage() {
   // Remove active class from all slides
@@ -1318,12 +1362,30 @@ function changeHeroImage() {
   // Add active class to current slide
   slides[currentImageIndex].classList.add('active');
   
-  // Update hero background
-  heroBackground.style.backgroundImage = `url(${heroImages[currentImageIndex]})`;
-  heroBackground.classList.add('active');
-  
   // Move to next image
   currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+}
+
+// WhatsApp Message Function
+function sendWhatsAppMessage(e) {
+  e.preventDefault();
+  
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const service = document.getElementById('service').value;
+  const message = document.getElementById('message').value;
+  
+  const emoji = service.includes('Course') ? '🎓' : service.includes('Makeup') ? '💄' : '✨';
+  const greeting = `Hello! ${emoji} I'm interested in connecting with BlushYourFace!`;
+  
+  const whatsappMessage = `${greeting}\n\n📋 Service: ${service}\n\n👤 Name: ${name}\n📱 Phone: ${phone}\n✉️ Email: ${email}\n\n💭 Message:\n${message}\n\n✨ Looking forward to hearing from you!`;
+  
+  const whatsappNumber = '918130112728';
+  const encodedMessage = encodeURIComponent(whatsappMessage);
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+  
+  window.open(whatsappUrl, '_blank');
 }
 
 // Initialize first image
